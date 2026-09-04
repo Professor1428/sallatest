@@ -24,7 +24,7 @@ define('SQLITE_PATH', __DIR__ . '/../data/database.sqlite');
 // ---- Security ------------------------------------------------------------
 // One-time secret required to create the FIRST admin account via admin/install.php.
 // Change this to your own random string before deploying, then forget the default.
-define('SETUP_KEY', 'ashrkat-setup-9f3d7c1b');
+define('SETUP_KEY', '7ff548d3469b9e96bc468e5e');
 
 // Set to true once the site is served over HTTPS (recommended in production).
 define('FORCE_HTTPS', false);
