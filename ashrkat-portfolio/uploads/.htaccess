@@ -1,0 +1,9 @@
+# Uploaded files must never be executable, even if a malicious file slips past validation.
+<FilesMatch "\.(php|phtml|php\d|phar|cgi|pl|py|sh|asp|aspx|exe)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes -ExecCGI
+php_flag engine off
+
+AddType text/plain .php .phtml .php3 .php4 .php5 .phar .cgi .pl .py .sh
