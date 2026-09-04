@@ -1,0 +1,24 @@
+# ---- Security headers ----
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+</IfModule>
+
+# ---- Never list directories ----
+Options -Indexes
+Options -ExecCGI
+
+# ---- Block access to sensitive files anywhere in the app ----
+<FilesMatch "\.(sqlite|sql|log|env|md|ini)$">
+    Require all denied
+</FilesMatch>
+
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+# ---- Deny direct access to internal folders ----
+RewriteEngine On
+RewriteRule ^(config|includes|data)/ - [F,L]

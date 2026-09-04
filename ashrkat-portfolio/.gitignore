@@ -1,0 +1,5 @@
+data/database.sqlite
+uploads/gallery/*
+uploads/case-studies/*
+!uploads/gallery/.gitkeep
+!uploads/case-studies/.gitkeep
