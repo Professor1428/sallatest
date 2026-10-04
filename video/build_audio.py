@@ -6,12 +6,12 @@ S='/tmp/claude-0/-home-user-sallatest/d8d3f76d-a835-504e-98cc-ff1925bfca37/scrat
 RAW=f'{S}/raw'; FX=f'{S}/fx'; os.makedirs(FX,exist_ok=True)
 subprocess.run(['python3',f'{HERE}/tts.py',f'{HERE}/lines.json',RAW],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 def ff(*a): subprocess.run(['ffmpeg','-y','-loglevel','error',*a],check=True)
-keys=json.load(open(f'{HERE}/lines.json',encoding='utf-8')).keys()
-for k in keys:
-    if k.startswith('v'):   # visitor: a bit higher/younger, natural
-        f='asetrate=24255,aresample=44100,atempo=0.909,highpass=f=90,volume=1.6'
-    else:                    # Jarvis: lower, calm, slight electronic sheen
-        f='asetrate=20727,aresample=44100,atempo=1.064,highpass=f=110,equalizer=f=3200:t=q:w=1.2:g=3,aecho=0.8:0.55:14|28:0.28|0.18,volume=1.7'
+keys=list(json.load(open(f'{HERE}/lines.json',encoding='utf-8')).keys())
+for k in keys:   # no pitch-shifting (it caused the robotic/choppy sound): just clean + level each voice
+    if k.startswith('v'):
+        f='highpass=f=80,lowpass=f=9000,acompressor=threshold=-20dB:ratio=3:attack=5:release=80,loudnorm=I=-17:TP=-2:LRA=7,afade=t=in:d=0.02'
+    else:
+        f='highpass=f=70,lowpass=f=10000,equalizer=f=2800:t=q:w=1.0:g=2,acompressor=threshold=-20dB:ratio=3:attack=5:release=80,aecho=0.85:0.3:22:0.10,loudnorm=I=-16:TP=-2:LRA=7,afade=t=in:d=0.02'
     ff('-i',f'{RAW}/{k}.wav','-af',f,'-ar','44100',f'{FX}/{k}.wav')
 D={k:sf.info(f'{FX}/{k}.wav').duration for k in keys}
 
