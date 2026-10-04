@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>جارفيس السعودي - تصور المشروع</title>
+<style>
+@page { size: A4; margin: 0; }
+:root { --bg:#07121f; --card:#0d2236; --cyan:#22d3ee; --gold:#f5b942; --green:#34d399; --ink:#16212c; --mut:#5b6b7b; }
+* { box-sizing: border-box; }
+body { margin:0; font-family:"DejaVu Sans","Noto Sans Arabic",sans-serif; color:var(--ink); background:#fff; font-size:12.5px; line-height:1.85; }
+.page { width:210mm; height:297mm; padding:16mm 15mm; page-break-after:always; position:relative; overflow:hidden; }
+.page:last-child { page-break-after:auto; }
+.cover { background:radial-gradient(circle at 50% 38%, #0e3a52 0%, var(--bg) 62%); color:#fff; text-align:center; padding-top:42mm; }
+.cover h1 { font-size:46px; margin:10mm 0 2mm; color:var(--cyan); }
+.cover .sub { font-size:19px; color:#cfe8f3; }
+.cover .tag { display:inline-block; margin-top:14mm; border:1px solid var(--gold); color:var(--gold); padding:3px 16px; border-radius:20px; font-size:13px; }
+.cover .foot { position:absolute; bottom:16mm; left:0; right:0; color:#7fa3b8; font-size:12px; }
+h2 { font-size:22px; color:#0b4f6c; margin:0 0 4mm; padding-bottom:2mm; border-bottom:3px solid var(--cyan); }
+h3 { font-size:15px; color:#0b4f6c; margin:5mm 0 1mm; }
+p { margin:0 0 3mm; }
+ul { margin:0 0 3mm; padding-right:18px; }
+li { margin-bottom:1mm; }
+.box { background:#eef8fb; border-right:4px solid var(--cyan); padding:3mm 4mm; border-radius:4px; margin:3mm 0; }
+.warn { background:#fff6e0; border-right-color:var(--gold); }
+table { width:100%; border-collapse:collapse; margin:3mm 0; font-size:12px; }
+th { background:#0b4f6c; color:#fff; padding:2mm 3mm; text-align:right; }
+td { padding:1.6mm 3mm; border-bottom:1px solid #d6e2ea; }
+tr:nth-child(even) td { background:#f5fafc; }
+.fig { margin:3mm 0; text-align:center; }
+.cap { font-size:11px; color:var(--mut); margin-top:1mm; }
+.grid2 { display:flex; gap:5mm; }
+.grid2 > div { flex:1; }
+.step { display:flex; gap:3mm; margin-bottom:2.5mm; align-items:flex-start; }
+.num { flex:0 0 7mm; height:7mm; border-radius:50%; background:var(--cyan); color:#05202b; text-align:center; font-weight:bold; line-height:7mm; }
+.pn { position:absolute; bottom:8mm; left:0; right:0; text-align:center; font-size:10px; color:#9aa9b6; }
+</style>
+</head>
+<body>
+
+<!-- ========== COVER ========== -->
+<section class="page cover">
+  <svg width="170" height="170" viewBox="0 0 170 170">
+    <defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#22d3ee" stop-opacity=".9"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="85" cy="85" r="80" fill="url(#g)" opacity=".35"/>
+    <circle cx="85" cy="85" r="64" fill="none" stroke="#22d3ee" stroke-width="3"/>
+    <circle cx="85" cy="85" r="50" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <circle cx="85" cy="85" r="30" fill="#22d3ee" opacity=".85"/>
+    <circle cx="85" cy="85" r="14" fill="#07121f"/>
+    <path d="M85 5 V25 M85 145 V165 M5 85 H25 M145 85 H165" stroke="#f5b942" stroke-width="3"/>
+  </svg>
+  <h1>جارفيس السعودي</h1>
+  <div class="sub">مساعد صوتي ذكي يفهم لهجتنا وينفّذ بدل ما يكتفي بالرد</div>
+  <div class="tag">تصور المشروع على أرض الواقع · المعرض السعودي للابتكار</div>
+  <div class="foot">مبني على Claude · Tool Use · ESP32 · MediaPipe</div>
+</section>
+
+<!-- ========== 1: IDEA ========== -->
+<section class="page">
+  <h2>١. الفكرة في دقيقة</h2>
+  <p>«جارفيس السعودي» مساعد منزلي يتحكم فيه المستخدم بصوته وبلهجته السعودية العفوية، وبحركة يده كذلك. يقول المستخدم: <b>«يا جارفيس، أنا بنام»</b>، فيطفئ الإضاءة، ويضبط المكيف، ويضبط منبه الفجر، ثم يرد: «تصبح على خير، المنبه على ٤:٤٥».</p>
+
+  <h3>المشكلة</h3>
+  <ul>
+    <li>المساعدات الحالية ضعيفة في فهم اللهجات السعودية والكلام غير الرسمي.</li>
+    <li>أغلبها يجاوب ولا يخطط: تحتاج تعطيه كل أمر على حدة.</li>
+    <li>كبار السن وذوو الإعاقة الحركية يحتاجون طريقة سهلة للتحكم في بيتهم دون حركة أو تطبيقات معقدة.</li>
+  </ul>
+
+  <h3>الحل</h3>
+  <ul>
+    <li><b>فهم عميق:</b> Claude يفهم اللهجة والسياق («طفّها» يعني الإضاءة المذكورة قبل قليل).</li>
+    <li><b>تنفيذ فعلي:</b> عبر Tool Use يستدعي أدوات حقيقية: إضاءة، مروحة، قفل، رسائل، مواقيت صلاة.</li>
+    <li><b>تخطيط متعدد الخطوات:</b> أمر واحد يتحول إلى عدة إجراءات يقررها النموذج بنفسه.</li>
+    <li><b>شخصية سعودية:</b> ترحيب وكرم وأسلوب قريب، ويراعي أوقات الصلاة.</li>
+  </ul>
+
+  <div class="box"><b>الفرق عن Siri / Alexa:</b> هما ينفذان أوامر محفوظة سلفاً. جارفيس يستنتج الخطوات من الهدف، فلا يحتاج المستخدم أن يحفظ صيغة معينة.</div>
+
+  <h3>من يستفيد؟</h3>
+  <table>
+    <tr><th>الفئة</th><th>الفائدة</th></tr>
+    <tr><td>كبار السن</td><td>يتحكمون ببيتهم بالكلام دون تطبيقات ولا أزرار.</td></tr>
+    <tr><td>ذوو الإعاقة الحركية والبصرية</td><td>استقلالية أكبر داخل المنزل.</td></tr>
+    <tr><td>الأسر</td><td>راحة، وتوفير في الكهرباء بإطفاء تلقائي.</td></tr>
+    <tr><td>مطورو المنزل الذكي</td><td>نموذج لواجهة عربية جاهزة للتكامل.</td></tr>
+  </table>
+  <div class="pn">١</div>
+</section>
+
+<!-- ========== 2: BOOTH ========== -->
+<section class="page">
+  <h2>٢. تصور الجناح في المعرض (منظر علوي)</h2>
+  <p>مساحة مقترحة <b>٣ × ٣ أمتار</b>، مصممة بحيث يرى الزائر المنتج ويجربه خلال أقل من ٣٠ ثانية من وصوله.</p>
+
+  <div class="fig">
+  <svg width="640" height="430" viewBox="0 0 640 430" font-family="DejaVu Sans">
+    <rect x="10" y="10" width="620" height="410" rx="10" fill="#f4f8fb" stroke="#0b4f6c" stroke-width="3"/>
+    <!-- back wall screen -->
+    <rect x="130" y="22" width="380" height="26" rx="4" fill="#07121f"/>
+    <circle cx="320" cy="35" r="9" fill="#22d3ee"/>
+    <text x="320" y="68" text-anchor="middle" font-size="13" fill="#0b4f6c" font-weight="bold">①  شاشة كبيرة (واجهة جارفيس الهولوغرافية)</text>
+    <!-- table with house -->
+    <rect x="150" y="100" width="340" height="150" rx="6" fill="#dbe9f1" stroke="#0b4f6c" stroke-width="2"/>
+    <rect x="215" y="120" width="210" height="110" rx="4" fill="#fff" stroke="#0b4f6c"/>
+    <line x1="320" y1="120" x2="320" y2="230" stroke="#0b4f6c"/>
+    <line x1="215" y1="175" x2="425" y2="175" stroke="#0b4f6c"/>
+    <circle cx="265" cy="148" r="7" fill="#f5b942"/><circle cx="375" cy="148" r="7" fill="#f5b942"/><circle cx="265" cy="203" r="7" fill="#f5b942"/>
+    <text x="320" y="265" text-anchor="middle" font-size="13" fill="#0b4f6c" font-weight="bold">②  طاولة العرض: مجسم البيت الذكي (إضاءة · مروحة · قفل)</text>
+    <!-- laptop/hub -->
+    <rect x="165" y="125" width="38" height="26" rx="3" fill="#34d399"/>
+    <text x="184" y="165" text-anchor="middle" font-size="10" fill="#0b4f6c">③ المحور</text>
+    <!-- gesture camera -->
+    <rect x="445" y="125" width="30" height="20" rx="3" fill="#f5b942"/>
+    <text x="460" y="162" text-anchor="middle" font-size="10" fill="#0b4f6c">④ كاميرا</text>
+    <!-- visitor zone -->
+    <ellipse cx="320" cy="340" rx="150" ry="52" fill="#fff6e0" stroke="#f5b942" stroke-width="2" stroke-dasharray="7 5"/>
+    <circle cx="285" cy="335" r="11" fill="#0b4f6c"/><circle cx="320" cy="345" r="11" fill="#0b4f6c"/><circle cx="355" cy="335" r="11" fill="#0b4f6c"/>
+    <text x="320" y="398" text-anchor="middle" font-size="13" fill="#8a5a00" font-weight="bold">⑤  منطقة الزائر: يتحدث ويلوّح بيده من هنا</text>
+    <!-- mic -->
+    <rect x="297" y="276" width="46" height="14" rx="7" fill="#0b4f6c"/>
+    <text x="320" y="302" text-anchor="middle" font-size="10" fill="#0b4f6c">مايك</text>
+    <!-- banner and QR -->
+    <rect x="30" y="100" width="70" height="170" rx="4" fill="#0b4f6c"/>
+    <text x="65" y="190" text-anchor="middle" font-size="12" fill="#fff" transform="rotate(-90 65 190)">بانر: الفكرة + الأثر</text>
+    <text x="65" y="290" text-anchor="middle" font-size="11" fill="#0b4f6c">⑥ بانر</text>
+    <rect x="540" y="105" width="60" height="60" rx="4" fill="#fff" stroke="#0b4f6c" stroke-width="2"/>
+    <path d="M550 115h14v14h-14zM576 115h14v14h-14zM550 141h14v14h-14zM576 141h6v6h-6zM585 150h5v5h-5z" fill="#0b4f6c"/>
+    <text x="570" y="183" text-anchor="middle" font-size="11" fill="#0b4f6c">⑦ QR للتجربة</text>
+    <text x="570" y="198" text-anchor="middle" font-size="11" fill="#0b4f6c">من الجوال</text>
+  </svg>
+  <div class="cap">الشكل ١: توزيع الجناح. الأرقام تقابل الشرح أدناه.</div>
+  </div>
+
+  <table>
+    <tr><th>#</th><th>العنصر</th><th>الدور</th></tr>
+    <tr><td>١</td><td>شاشة كبيرة (٤٣" فأكثر)</td><td>واجهة جارفيس: دائرة تنبض مع الصوت وتعرض الأوامر المنفذة.</td></tr>
+    <tr><td>٢</td><td>مجسم البيت الذكي</td><td>الأجهزة الحقيقية التي يراها الزائر تستجيب أمام عينه.</td></tr>
+    <tr><td>٣</td><td>المحور (لابتوب + ESP32)</td><td>يشغل الموقع ويتصل بـ Claude ويرسل الأوامر للأجهزة.</td></tr>
+    <tr><td>٤</td><td>كاميرا الإيماءات</td><td>تتبع حركة اليد (MediaPipe) للتحكم بالواجهة.</td></tr>
+    <tr><td>٥</td><td>منطقة الزائر + مايك</td><td>الزائر يتحدث ويجرب بنفسه.</td></tr>
+    <tr><td>٦ و ٧</td><td>بانر وQR</td><td>شرح سريع، وQR يفتح نسخة تجريبية على جوال الزائر.</td></tr>
+  </table>
+  <div class="pn">٢</div>
+</section>
+
+<!-- ========== 3: HOUSE MODEL ========== -->
+<section class="page">
+  <h2>٣. مجسم البيت الذكي (طاولة العرض)</h2>
+  <p>مجسم مصغر بحجم تقريبي <b>٦٠ × ٤٠ سم</b> من الخشب أو الأكريليك، يتكون من ثلاث غرف يتحكم في كل غرفة جهاز حقيقي، ليرى الزائر أثر كلامه فوراً.</p>
+
+  <div class="fig">
+  <svg width="600" height="330" viewBox="0 0 600 330" font-family="DejaVu Sans">
+    <polygon points="40,110 300,20 560,110" fill="#0b4f6c"/>
+    <rect x="60" y="110" width="480" height="190" fill="#fff" stroke="#0b4f6c" stroke-width="4"/>
+    <line x1="300" y1="110" x2="300" y2="300" stroke="#0b4f6c" stroke-width="3"/>
+    <line x1="300" y1="205" x2="540" y2="205" stroke="#0b4f6c" stroke-width="3"/>
+    <!-- living room -->
+    <text x="180" y="138" text-anchor="middle" font-size="14" font-weight="bold" fill="#0b4f6c">المجلس</text>
+    <circle cx="180" cy="190" r="22" fill="#fde68a" stroke="#f5b942" stroke-width="3"/>
+    <text x="180" y="196" text-anchor="middle" font-size="11" fill="#7a5600">LED</text>
+    <text x="180" y="250" text-anchor="middle" font-size="12" fill="#16212c">إضاءة RGB تتغير ألوانها</text>
+    <text x="180" y="270" text-anchor="middle" font-size="11" fill="#5b6b7b">«خلها زرقاء»</text>
+    <!-- bedroom -->
+    <text x="420" y="138" text-anchor="middle" font-size="14" font-weight="bold" fill="#0b4f6c">غرفة النوم</text>
+    <circle cx="420" cy="168" r="18" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="8 5"/>
+    <text x="420" y="173" text-anchor="middle" font-size="10" fill="#0b4f6c">مروحة</text>
+    <text x="420" y="196" text-anchor="middle" font-size="11" fill="#5b6b7b">«شغّل المروحة»</text>
+    <!-- entrance -->
+    <text x="420" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="#0b4f6c">المدخل</text>
+    <rect x="395" y="240" width="50" height="55" fill="#e2c9a0" stroke="#7a5600" stroke-width="2"/>
+    <circle cx="436" cy="268" r="3" fill="#7a5600"/>
+    <text x="420" y="287" text-anchor="middle" font-size="10" fill="#34d399" font-weight="bold">سيرفو</text>
+    <text x="490" y="262" text-anchor="middle" font-size="11" fill="#16212c">باب بقفل</text>
+    <text x="490" y="280" text-anchor="middle" font-size="11" fill="#5b6b7b">«افتح الباب»</text>
+    <!-- esp -->
+    <rect x="270" y="305" width="60" height="20" rx="3" fill="#34d399"/>
+    <text x="300" y="319" text-anchor="middle" font-size="10" fill="#05202b">ESP32</text>
+  </svg>
+  <div class="cap">الشكل ٢: مقطع أمامي للمجسم والأجهزة المتحكَّم بها.</div>
+  </div>
+
+  <h3>الأجهزة ووسيلة التحكم</h3>
+  <table>
+    <tr><th>الجهاز</th><th>القطعة</th><th>طريقة التحكم</th></tr>
+    <tr><td>إضاءة المجلس</td><td>شريط LED RGB أو لمبة ذكية</td><td>ESP32 عبر ريليه/ترانزستور</td></tr>
+    <tr><td>مروحة النوم</td><td>مروحة صغيرة ٥ فولت</td><td>ريليه</td></tr>
+    <tr><td>قفل المدخل</td><td>سيرفو SG90</td><td>PWM من ESP32</td></tr>
+    <tr><td>حساس الحرارة (اختياري)</td><td>DHT22</td><td>قراءة تعرضها الشاشة ويستخدمها Claude</td></tr>
+  </table>
+
+  <div class="box warn"><b>ملاحظة سلامة:</b> المجسم كله بجهد منخفض (٥ فولت). لا يُستخدم جهد المنزل (٢٢٠ فولت) في الجناح.</div>
+  <div class="pn">٣</div>
+</section>
+
+<!-- ========== 4: ARCHITECTURE ========== -->
+<section class="page">
+  <h2>٤. كيف يعمل النظام</h2>
+  <div class="fig">
+  <svg width="620" height="400" viewBox="0 0 620 400" font-family="DejaVu Sans">
+    <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#0b4f6c"/></marker></defs>
+    <rect x="240" y="8" width="140" height="44" rx="8" fill="#fde68a" stroke="#f5b942" stroke-width="2"/>
+    <text x="310" y="35" text-anchor="middle" font-size="14" font-weight="bold">🎤 صوت الزائر</text>
+    <line x1="310" y1="52" x2="310" y2="78" stroke="#0b4f6c" stroke-width="2" marker-end="url(#a)"/>
+
+    <rect x="200" y="80" width="220" height="48" rx="8" fill="#dbe9f1" stroke="#0b4f6c" stroke-width="2"/>
+    <text x="310" y="102" text-anchor="middle" font-size="13" font-weight="bold">① الأذن: تحويل الكلام لنص</text>
+    <text x="310" y="120" text-anchor="middle" font-size="11" fill="#5b6b7b">Web Speech API (عربي)</text>
+    <line x1="310" y1="128" x2="310" y2="154" stroke="#0b4f6c" stroke-width="2" marker-end="url(#a)"/>
+
+    <rect x="170" y="156" width="280" height="64" rx="8" fill="#07121f"/>
+    <text x="310" y="181" text-anchor="middle" font-size="14" font-weight="bold" fill="#22d3ee">② العقل: Claude + Tool Use</text>
+    <text x="310" y="202" text-anchor="middle" font-size="11" fill="#cfe8f3">يفهم اللهجة، ويقرر الأدوات والخطوات</text>
+
+    <line x1="230" y1="220" x2="120" y2="254" stroke="#0b4f6c" stroke-width="2" marker-end="url(#a)"/>
+    <line x1="310" y1="220" x2="310" y2="254" stroke="#0b4f6c" stroke-width="2" marker-end="url(#a)"/>
+    <line x1="390" y1="220" x2="500" y2="254" stroke="#0b4f6c" stroke-width="2" marker-end="url(#a)"/>
+
+    <rect x="20" y="256" width="200" height="58" rx="8" fill="#d1fae5" stroke="#34d399" stroke-width="2"/>
+    <text x="120" y="280" text-anchor="middle" font-size="13" font-weight="bold">③ أدوات الأجهزة</text>
+    <text x="120" y="300" text-anchor="middle" font-size="11" fill="#5b6b7b">إضاءة · مروحة · قفل → ESP32</text>
+
+    <rect x="220" y="256" width="180" height="58" rx="8" fill="#d1fae5" stroke="#34d399" stroke-width="2"/>
+    <text x="310" y="280" text-anchor="middle" font-size="13" font-weight="bold">أدوات المعلومات</text>
+    <text x="310" y="300" text-anchor="middle" font-size="11" fill="#5b6b7b">طقس · صلاة · تذكير</text>
+
+    <rect x="400" y="256" width="200" height="58" rx="8" fill="#d1fae5" stroke="#34d399" stroke-width="2"/>
+    <text x="500" y="280" text-anchor="middle" font-size="13" font-weight="bold">أدوات الرؤية</text>
+    <text x="500" y="300" text-anchor="middle" font-size="11" fill="#5b6b7b">كاميرا + Claude Vision</text>
+
+    <line x1="310" y1="314" x2="310" y2="338" stroke="#0b4f6c" stroke-width="2" marker-end="url(#a)"/>
+    <rect x="110" y="340" width="400" height="50" rx="8" fill="#fde68a" stroke="#f5b942" stroke-width="2"/>
+    <text x="310" y="362" text-anchor="middle" font-size="13" font-weight="bold">④ الرد: صوت عربي + ⑤ واجهة هولوغرافية على الشاشة</text>
+    <text x="310" y="380" text-anchor="middle" font-size="11" fill="#5b6b7b">TTS + دائرة نابضة + سجل الأوامر المنفذة</text>
+  </svg>
+  <div class="cap">الشكل ٣: تدفق الطلب من صوت الزائر حتى استجابة الأجهزة.</div>
+  </div>
+
+  <h3>مثال على قرار Claude</h3>
+  <div class="box">
+    <b>الزائر:</b> «أنا بنام»<br>
+    <b>Claude يستدعي:</b> <code>control_light(room="majlis", state="off")</code> ثم <code>control_fan(room="bedroom", state="on")</code> ثم <code>set_alarm(time="04:45")</code> بعد أن يستعلم من <code>get_prayer_times()</code><br>
+    <b>الرد المنطوق:</b> «تصبح على خير، أطفأت الأنوار وشغلت المروحة، والمنبه على ٤:٤٥ لصلاة الفجر.»
+  </div>
+  <div class="pn">٤</div>
+</section>
+
+<!-- ========== 5: DEMO ========== -->
+<section class="page">
+  <h2>٥. سيناريو العرض (٣ دقائق)</h2>
+  <div class="step"><div class="num">١</div><div><b>الافتتاح (٢٠ ثانية):</b> «يا جارفيس، عرّف نفسك للضيوف». يرحب بلهجة سعودية وتنبض الدائرة على الشاشة.</div></div>
+  <div class="step"><div class="num">٢</div><div><b>أجهزة حية (٤٥ ثانية):</b> «شغّل الأنوار»، «خلها حمراء»، «افتح الباب». يرى الزائر المجسم يستجيب أمام عينه.</div></div>
+  <div class="step"><div class="num">٣</div><div><b>الذكاء (٤٥ ثانية):</b> «أنا بنام» أو «جيتني ضيوف». ينفذ سلسلة أوامر لم تبرمجها بشكل صريح.</div></div>
+  <div class="step"><div class="num">٤</div><div><b>الثقافة والحياة اليومية (٣٠ ثانية):</b> «متى صلاة العصر؟» «وشلون الجو برا؟»</div></div>
+  <div class="step"><div class="num">٥</div><div><b>دور الزائر (٣٠ ثانية):</b> أي زائر يجرب بنفسه، وهذا يرفع الانطباع كثيراً.</div></div>
+  <div class="step"><div class="num">٦</div><div><b>الختام (٣٠ ثانية):</b> التحكم بالإيماءة: تلوّح بيدك فتدور الواجهة وتتحرك العناصر.</div></div>
+
+  <h3>تجربة الزائر خطوة بخطوة</h3>
+  <table>
+    <tr><th>اللحظة</th><th>ما يراه الزائر</th><th>ما يحدث خلف الكواليس</th></tr>
+    <tr><td>يقترب</td><td>الدائرة تنبض وتدعوه للكلام</td><td>الكاميرا تكتشف وجود شخص</td></tr>
+    <tr><td>يتكلم</td><td>نص كلامه يظهر على الشاشة</td><td>تحويل الصوت لنص</td></tr>
+    <tr><td>ينتظر ثانية</td><td>مؤشر «يفكر»</td><td>Claude يختار الأدوات</td></tr>
+    <tr><td>النتيجة</td><td>الإضاءة تتغير، والصوت يرد</td><td>ESP32 ينفذ، ثم TTS</td></tr>
+  </table>
+
+  <div class="box"><b>نصيحة عرض:</b> جهّز ٥ جمل جاهزة تعمل دائماً (ملف «سيناريو آمن») لتبدأ بها، ثم افتح المجال للزوار.</div>
+  <div class="pn">٥</div>
+</section>
+
+<!-- ========== 6: BOM ========== -->
+<section class="page">
+  <h2>٦. المعدات والتكلفة التقريبية</h2>
+  <table>
+    <tr><th>البند</th><th>الكمية</th><th>التكلفة التقريبية (ريال)</th></tr>
+    <tr><td>لوحة ESP32</td><td>١–٢</td><td>٣٠ – ٦٠</td></tr>
+    <tr><td>ريليه + شريط LED RGB + مروحة ٥ فولت</td><td>مجموعة</td><td>٦٠ – ١٠٠</td></tr>
+    <tr><td>سيرفو SG90 + حساس DHT22</td><td>١</td><td>٣٠ – ٦٠</td></tr>
+    <tr><td>خامات المجسم (خشب / أكريليك)</td><td>١</td><td>٥٠ – ١٥٠</td></tr>
+    <tr><td>مايك USB + كاميرا ويب</td><td>١</td><td>١٠٠ – ٢٠٠</td></tr>
+    <tr><td>شاشة كبيرة (إن لم تتوفر في الجناح)</td><td>١</td><td>مستعارة / مؤجرة</td></tr>
+    <tr><td>بانر + طباعة QR</td><td>١</td><td>٦٠ – ١٢٠</td></tr>
+    <tr><td><b>الإجمالي بدون الشاشة</b></td><td></td><td><b>≈ ٣٣٠ – ٦٩٠</b></td></tr>
+  </table>
+  <p style="font-size:11px;color:var(--mut)">الأرقام تقديرية وتختلف حسب المتجر. تكلفة استخدام Claude API لعرض لعدة أيام صغيرة جداً، لكن ضع حداً للإنفاق في لوحة التحكم.</p>
+
+  <h3>البرمجيات</h3>
+  <ul>
+    <li><b>الواجهة:</b> HTML/JavaScript (أو Next.js) تعمل في Chrome بملء الشاشة.</li>
+    <li><b>العقل:</b> Claude API مع Tool Use (يُحفظ المفتاح في خادم صغير، لا في المتصفح).</li>
+    <li><b>الصوت:</b> Web Speech API للتعرف، وTTS عربي للنطق.</li>
+    <li><b>الأجهزة:</b> ESP32 يستقبل أوامر عبر WiFi (HTTP أو WebSocket).</li>
+    <li><b>الإيماءات:</b> MediaPipe Hands في المتصفح.</li>
+  </ul>
+
+  <h3>الخطة الزمنية</h3>
+  <table>
+    <tr><th>المرحلة</th><th>المدة</th><th>الناتج</th></tr>
+    <tr><td>١. الأساس</td><td>يومان</td><td>واجهة + صوت عربي + Claude + أدوات تجريبية على الشاشة</td></tr>
+    <tr><td>٢. الأجهزة</td><td>يوم</td><td>ESP32 ومجسم يعمل بإضاءة ومروحة وقفل</td></tr>
+    <tr><td>٣. الإبهار</td><td>يوم</td><td>الإيماءات، الرؤية، صقل الشخصية والصوت</td></tr>
+    <tr><td>٤. بروفة</td><td>يوم</td><td>تجربة كاملة في ظروف تشبه المعرض</td></tr>
+  </table>
+  <div class="pn">٦</div>
+</section>
+
+<!-- ========== 7: RISKS ========== -->
+<section class="page">
+  <h2>٧. المخاطر وخطط الطوارئ</h2>
+  <p>أكثر ما يفسد العروض الحية هو الإنترنت والضجيج. لذلك نجهز بدائل مسبقاً:</p>
+  <table>
+    <tr><th>الخطر</th><th>الحل</th></tr>
+    <tr><td>إنترنت المعرض ضعيف</td><td>نقطة اتصال من جوال بشريحة احتياطية، مع شبكة WiFi محلية مستقلة للأجهزة.</td></tr>
+    <tr><td>ضجيج يعطل التعرف على الصوت</td><td>مايك قريب موجه، وزر «اضغط وتحدث»، وإمكانية إدخال نص من لوحة المفاتيح.</td></tr>
+    <tr><td>تأخر استجابة Claude</td><td>مؤشر «يفكر» جذاب، واستخدام نموذج سريع للأوامر البسيطة.</td></tr>
+    <tr><td>انقطاع كامل للشبكة</td><td>«وضع تجريبي» بردود وأوامر محفوظة يعمل دون إنترنت.</td></tr>
+    <tr><td>عطل في الأجهزة</td><td>قطع ESP32 وكابلات احتياطية، والواجهة تحاكي الأجهزة إن تعطلت.</td></tr>
+    <tr><td>أمر خطر أو مقصود من زائر</td><td>قائمة أدوات محدودة (لا حذف ولا شراء ولا إرسال حقيقي)، ويُظهر الأمر قبل تنفيذ أي إجراء حساس.</td></tr>
+  </table>
+
+  <h3>الخصوصية والأمان</h3>
+  <ul>
+    <li>لا تُحفظ تسجيلات الزوار، ويُمسح السجل عند نهاية كل جلسة.</li>
+    <li>الكاميرا لا تتعرف على الوجوه، تستخدم فقط لتتبع اليد.</li>
+    <li>مفتاح API في الخادم فقط، ومعه سقف إنفاق يومي.</li>
+  </ul>
+
+  <h3>قائمة فحص قبل المعرض</h3>
+  <table>
+    <tr><td>☐ شحن الأجهزة وتجربة الكهرباء في الجناح</td><td>☐ نسخة احتياطية من الكود على فلاشة</td></tr>
+    <tr><td>☐ اختبار الصوت في مكان مزدحم</td><td>☐ تفعيل الوضع التجريبي دون إنترنت</td></tr>
+    <tr><td>☐ ٥ جمل آمنة جاهزة للبداية</td><td>☐ شرح مختصر للجنة (٣٠ ثانية)</td></tr>
+  </table>
+  <div class="pn">٧</div>
+</section>
+
+<!-- ========== 8: PITCH ========== -->
+<section class="page">
+  <h2>٨. عرض المشروع للجنة التحكيم</h2>
+
+  <h3>خطاب المصعد (٣٠ ثانية)</h3>
+  <div class="box">«المساعدات الصوتية اليوم لا تفهم لهجتنا، وتنفذ أوامر محفوظة فقط. جارفيس السعودي مساعد منزلي يفهم كلامنا كما نتكلم، ويخطط وينفذ عدة خطوات من أمر واحد. أنا أقول "بنام" فيطفئ الأنوار ويضبط المروحة ويوقظني للفجر. صُمم لخدمة كبار السن وذوي الإعاقة الحركية، ويدعم المحتوى العربي والتحول الرقمي في رؤية ٢٠٣٠.»</div>
+
+  <h3>معايير التقييم وكيف نغطيها</h3>
+  <table>
+    <tr><th>المعيار</th><th>ما نقدمه</th></tr>
+    <tr><td>الابتكار</td><td>مساعد يخطط وينفذ بلهجة سعودية، مع إيماءات ورؤية في نظام واحد.</td></tr>
+    <tr><td>الأثر الاجتماعي</td><td>استقلالية لكبار السن وذوي الإعاقة داخل بيوتهم.</td></tr>
+    <tr><td>الجدوى التقنية</td><td>نموذج يعمل أمامهم بأجهزة حقيقية، ومنخفض التكلفة.</td></tr>
+    <tr><td>التوافق مع الرؤية</td><td>الذكاء الاصطناعي، المحتوى العربي، المنزل الذكي، ترشيد الطاقة.</td></tr>
+    <tr><td>قابلية التوسع</td><td>يرتبط لاحقاً بأجهزة المنزل الذكي الحقيقية (Matter / Home Assistant).</td></tr>
+  </table>
+
+  <h3>خطوات مستقبلية</h3>
+  <ul>
+    <li>دعم اللهجات (نجدية، حجازية، جنوبية) بتدريب أمثلة لكل لهجة.</li>
+    <li>تكامل مع Home Assistant لأجهزة المنزل التجارية.</li>
+    <li>وضع «رعاية» لكبار السن: تذكير الأدوية وتنبيه الأهل عند الطوارئ.</li>
+    <li>تطبيق جوال للأهل لمتابعة الحالة بموافقة المستخدم.</li>
+  </ul>
+
+  <div class="box" style="margin-top:8mm;text-align:center"><b>جارفيس السعودي</b> · مساعد يفهمك ويخدمك بلهجتك</div>
+  <div class="pn">٨</div>
+</section>
+
+</body>
+</html>
