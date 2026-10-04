@@ -5,39 +5,82 @@ html,body{margin:0;background:#000;overflow:hidden}
 svg{display:block;font-family:"DejaVu Sans","Noto Sans Arabic",sans-serif}
 .ar{direction:rtl;unicode-bidi:plaintext}
 .mono{font-family:"DejaVu Sans Mono",monospace;direction:ltr}
-</style></head><body>
+</style>
+<script src="timeline.js"></script></head><body>
 <svg id="s" width="1280" height="720" viewBox="0 0 1280 720">
 <defs>
- <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8f0f6"/><stop offset="1" stop-color="#cbd9e4"/></linearGradient>
- <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa3b3"/><stop offset="1" stop-color="#6e8497"/></linearGradient>
- <radialGradient id="glow"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+ <radialGradient id="halo"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="spill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8fbff" stop-opacity=".85"/><stop offset="1" stop-color="#e8fbff" stop-opacity="0"/></linearGradient>
+ <linearGradient id="ledglow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+ <radialGradient id="scrg"><stop offset="0" stop-color="#22d3ee" stop-opacity=".9"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
  <radialGradient id="introg" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#0e3a52"/><stop offset="1" stop-color="#07121f"/></radialGradient>
 </defs>
 
-<!-- ============ SCENE ============ -->
-<g id="scene">
- <rect width="1280" height="500" fill="url(#wall)"/>
- <rect y="500" width="1280" height="220" fill="url(#floor)"/>
- <polygon points="260,520 1020,520 1180,720 100,720" fill="#1f5f7a" opacity=".55"/>
- <rect y="496" width="1280" height="6" fill="#aebfcc"/>
-
+<!-- ============ ROOM (the booth) ============ -->
+<g id="room">
+ <rect width="1280" height="720" fill="#e6eef4"/>
+ <polygon points="0,0 1280,0 1080,62 200,62" fill="#f3f7fa"/>
+ <polygon points="0,0 200,62 200,500 0,720" fill="#d5e1ea"/>
+ <polygon points="1280,0 1080,62 1080,500 1280,720" fill="#cfdce7"/>
+ <rect x="200" y="62" width="880" height="438" fill="#e8f0f6"/>
+ <polygon points="0,720 200,500 1080,500 1280,720" fill="#b18c64"/>
+ <g stroke="#9a7650" stroke-width="2" opacity=".55"><line x1="200" y1="500" x2="40" y2="720"/><line x1="420" y1="500" x2="330" y2="720"/><line x1="640" y1="500" x2="640" y2="720"/><line x1="860" y1="500" x2="950" y2="720"/><line x1="1080" y1="500" x2="1240" y2="720"/></g>
+ <rect x="200" y="494" width="880" height="8" fill="#c8d6e2"/>
+ <!-- rug -->
+ <polygon points="470,540 810,540 930,712 350,712" fill="#8b2f3a"/><polygon points="490,550 790,550 898,700 382,700" fill="none" stroke="#e6c27a" stroke-width="3"/>
+ <!-- majlis sofa -->
+ <rect x="320" y="408" width="640" height="88" rx="14" fill="#6b4a35"/>
+ <g fill="#a4343a" stroke="#e6c27a" stroke-width="2"><rect x="340" y="388" width="90" height="62" rx="14"/><rect x="450" y="388" width="90" height="62" rx="14"/><rect x="740" y="388" width="90" height="62" rx="14"/><rect x="850" y="388" width="90" height="62" rx="14"/></g>
  <!-- QR sign -->
- <g transform="translate(50,380)"><rect width="100" height="100" rx="8" fill="#fff" stroke="#0b4f6c" stroke-width="3"/>
-  <path d="M14 14h24v24h-24zM62 14h24v24h-24zM14 62h24v24h-24zM62 62h10v10h-10zM76 76h10v10h-10zM48 48h8v8h-8z" fill="#0b4f6c"/>
-  <text x="50" y="122" text-anchor="middle" font-size="15" fill="#0b4f6c" class="ar">جرّب من جوالك</text></g>
+ <g transform="translate(930,200)"><rect width="76" height="76" rx="6" fill="#fff" stroke="#0b4f6c" stroke-width="3"/><path d="M10 10h18v18h-18zM48 10h18v18h-18zM10 48h18v18h-18zM48 48h8v8h-8zM58 58h8v8h-8z" fill="#0b4f6c"/><text x="38" y="96" text-anchor="middle" font-size="12" fill="#0b4f6c" class="ar">جرّب من جوالك</text></g>
+ <!-- banner text on left wall -->
+ <text x="105" y="190" text-anchor="middle" font-size="22" font-weight="bold" fill="#0b4f6c" class="ar" transform="rotate(-8 105 190)">جارفيس</text>
+ <text x="105" y="216" text-anchor="middle" font-size="17" fill="#0b4f6c" class="ar" transform="rotate(-8 105 216)">السعودي</text>
+ <!-- fan -->
+ <g transform="translate(1030,0)"><rect x="-3" y="436" width="6" height="58" fill="#556"/><rect x="-26" y="490" width="52" height="8" rx="3" fill="#445"/>
+  <circle cx="0" cy="396" r="38" fill="none" stroke="#7a8794" stroke-width="3"/>
+  <g transform="translate(0,396)"><g id="fan"><ellipse cx="0" cy="-17" rx="7" ry="17" fill="#22d3ee"/><ellipse cx="0" cy="-17" rx="7" ry="17" fill="#22d3ee" transform="rotate(120)"/><ellipse cx="0" cy="-17" rx="7" ry="17" fill="#22d3ee" transform="rotate(240)"/><circle r="5" fill="#0b4f6c"/></g></g></g>
+ <!-- visitor -->
+ <g id="visitor">
+  <rect x="-24" y="598" width="20" height="26" rx="6" fill="#222"/><rect x="4" y="598" width="20" height="26" rx="6" fill="#222"/>
+  <path d="M-42 450 Q-42 428 -22 428 L22 428 Q42 428 42 450 L48 604 L-48 604 Z" fill="#fff" stroke="#9fb3c2" stroke-width="3"/>
+  <line x1="0" y1="440" x2="0" y2="480" stroke="#9fb3c2" stroke-width="2"/>
+  <g transform="translate(-38,455)"><line x1="0" y1="0" x2="-8" y2="82" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="-9" cy="90" r="8" fill="#d9a877"/></g>
+  <g id="rarm" transform="translate(38,455) rotate(-10)"><line x1="0" y1="0" x2="0" y2="84" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="0" cy="92" r="8" fill="#d9a877"/></g>
+  <circle cx="0" cy="402" r="27" fill="#d9a877"/>
+  <path d="M-34 410 Q-38 366 0 362 Q38 366 34 410 Q30 392 18 384 L-18 384 Q-30 392 -34 410Z" fill="#fff" stroke="#9fb3c2" stroke-width="2.5"/>
+  <path d="M-34 410 L-40 440 L-24 432 Z" fill="#fff" stroke="#9fb3c2" stroke-width="2"/><path d="M34 410 L40 440 L24 432 Z" fill="#fff" stroke="#9fb3c2" stroke-width="2"/>
+  <ellipse cx="0" cy="372" rx="31" ry="8" fill="none" stroke="#111" stroke-width="5"/>
+  <circle cx="-9" cy="402" r="2.8" fill="#222"/><circle cx="9" cy="402" r="2.8" fill="#222"/>
+  <ellipse id="mouth" cx="0" cy="414" rx="6" ry="1.5" fill="#6b2a2a"/>
+  <g id="waves" fill="none" stroke="#f5b942" stroke-width="3" stroke-linecap="round" opacity="0"><path d="M38 398 q8 6 0 12"/><path d="M48 392 q13 12 0 24"/><path d="M58 386 q18 18 0 36"/></g>
+ </g>
+</g>
 
- <!-- Banner -->
- <g transform="translate(1100,80)"><rect width="130" height="450" rx="6" fill="#0b4f6c"/>
-  <circle cx="65" cy="70" r="30" fill="none" stroke="#22d3ee" stroke-width="4"/><circle cx="65" cy="70" r="12" fill="#22d3ee"/>
-  <text x="65" y="150" text-anchor="middle" font-size="26" font-weight="bold" fill="#22d3ee" class="ar">جارفيس</text>
-  <text x="65" y="182" text-anchor="middle" font-size="22" fill="#fff" class="ar">السعودي</text>
-  <text x="65" y="240" text-anchor="middle" font-size="14" fill="#cfe8f3" class="ar">مساعد يفهم لهجتك</text>
-  <text x="65" y="264" text-anchor="middle" font-size="14" fill="#cfe8f3" class="ar">وينفّذ أوامرك</text>
-  <rect x="45" y="460" width="40" height="0" fill="#fff"/></g>
- <rect x="1150" y="530" width="30" height="8" fill="#333"/>
+<!-- darkness / tint overlays -->
+<rect id="dark" width="1280" height="720" fill="#02060d" opacity="0"/>
+<rect id="tint" width="1280" height="720" fill="#ff1a1a" opacity="0"/>
 
- <!-- Screen -->
- <g id="screen">
+<!-- ============ EMISSIVE LAYER (stays bright) ============ -->
+<g id="emit">
+ <!-- ceiling lamps -->
+ <g id="lamps"></g>
+ <!-- LED strip -->
+ <rect id="ledglow" x="200" y="70" width="880" height="70" fill="url(#ledglow)" opacity="0"/>
+ <rect id="led" x="200" y="62" width="880" height="8" fill="#2a2f36"/>
+ <!-- door -->
+ <rect x="217" y="296" width="106" height="206" fill="#4a3322"/>
+ <rect id="exterior" x="225" y="304" width="90" height="196" fill="#dff5ff" opacity="0"/>
+ <g id="door"><rect width="90" height="196" fill="#8b5e3c" stroke="#5b3b24" stroke-width="3"/><rect x="10" y="14" width="70" height="72" fill="none" stroke="#6f4a2e" stroke-width="3"/><circle cx="78" cy="104" r="4" fill="#e6c27a"/></g>
+ <circle id="lockled" cx="270" cy="286" r="6" fill="#ff4d4d"/><text x="270" y="274" text-anchor="middle" font-size="11" fill="#0b4f6c" class="ar">قفل ذكي</text>
+ <polygon id="spill" points="225,500 315,500 460,720 120,720" fill="url(#spill)" opacity="0"/>
+ <!-- screen glow -->
+ <ellipse id="scrglow" cx="640" cy="360" rx="520" ry="300" fill="url(#scrg)" opacity=".1"/>
+ <!-- camera -->
+ <g><rect x="618" y="74" width="44" height="20" rx="4" fill="#222"/><circle cx="640" cy="84" r="6" fill="#09222e" stroke="#555" stroke-width="2"/><circle id="camled" cx="656" cy="79" r="2.5" fill="#444"/></g>
+ <!-- screen -->
+ <g transform="translate(361,100) scale(0.9) translate(-330,-18)">
+<g id="screen">
   <rect x="330" y="18" width="620" height="232" rx="12" fill="#05101a" stroke="#2a3b49" stroke-width="5"/>
   <rect x="632" y="250" width="16" height="30" fill="#2a3b49"/>
   <text id="tx_user" x="640" y="48" text-anchor="middle" font-size="19" fill="#fde68a" class="ar"></text>
@@ -57,64 +100,12 @@ svg{display:block;font-family:"DejaVu Sans","Noto Sans Arabic",sans-serif}
   <text id="tx_r2" x="925" y="238" text-anchor="start" font-size="17" fill="#fff" class="ar"></text>
  </g>
 
- <!-- Table & house -->
- <ellipse id="glowl" cx="550" cy="395" rx="190" ry="110" fill="#ffd36b" opacity="0"/>
- <rect x="400" y="450" width="480" height="20" rx="4" fill="#8b5e3c"/>
- <rect x="410" y="470" width="460" height="28" fill="#6f4a2e"/>
- <rect x="420" y="498" width="20" height="104" fill="#5b3b24"/><rect x="840" y="498" width="20" height="104" fill="#5b3b24"/>
- <g id="house">
-  <polygon points="450,332 640,278 830,332" fill="#0b4f6c"/>
-  <rect x="460" y="332" width="360" height="118" fill="#fff" stroke="#0b4f6c" stroke-width="4"/>
-  <rect id="majlis" x="462" y="334" width="176" height="114" fill="#1d2b36"/>
-  <rect x="642" y="334" width="176" height="114" fill="#cfdde8"/>
-  <line x1="640" y1="334" x2="640" y2="450" stroke="#0b4f6c" stroke-width="3"/>
-  <line x1="550" y1="334" x2="550" y2="362" stroke="#555" stroke-width="2"/>
-  <circle id="bulb" cx="550" cy="372" r="11" fill="#444" stroke="#999" stroke-width="2"/>
-  <text x="550" y="440" text-anchor="middle" font-size="13" fill="#9fb3c2" class="ar" id="lbl_m">المجلس</text>
-  <text x="690" y="440" text-anchor="middle" font-size="13" fill="#0b4f6c" class="ar">غرفة النوم</text>
-  <g transform="translate(700,385)">
-   <rect x="-3" y="14" width="6" height="30" fill="#556"/>
-   <g id="fan"><ellipse cx="0" cy="-14" rx="6" ry="14" fill="#22d3ee"/><ellipse cx="0" cy="-14" rx="6" ry="14" fill="#22d3ee" transform="rotate(120)"/><ellipse cx="0" cy="-14" rx="6" ry="14" fill="#22d3ee" transform="rotate(240)"/><circle r="4" fill="#0b4f6c"/></g>
-  </g>
-  <rect x="745" y="390" width="50" height="58" fill="#0b1a24"/>
-  <g id="door"><rect width="50" height="58" fill="#e2c9a0" stroke="#7a5600" stroke-width="2"/><circle cx="42" cy="30" r="3" fill="#7a5600"/></g>
-  <rect x="800" y="405" width="12" height="12" rx="2" fill="#34d399"/>
-  <text x="806" y="430" text-anchor="middle" font-size="9" fill="#0b4f6c">ESP32</text>
+ 
  </g>
- <!-- mic -->
- <g transform="translate(440,430)"><rect x="-2" y="0" width="4" height="20" fill="#333"/><rect x="-7" y="-14" width="14" height="20" rx="7" fill="#0b4f6c"/></g>
-
- <!-- Camera -->
- <g transform="translate(1010,0)">
-  <line x1="0" y1="360" x2="-34" y2="590" stroke="#333" stroke-width="5"/><line x1="0" y1="360" x2="34" y2="590" stroke="#333" stroke-width="5"/><line x1="0" y1="360" x2="0" y2="590" stroke="#333" stroke-width="5"/>
-  <rect x="-30" y="320" width="60" height="40" rx="6" fill="#222"/><circle cx="0" cy="340" r="12" fill="#09222e" stroke="#555" stroke-width="3"/>
-  <circle id="camled" cx="22" cy="328" r="3" fill="#444"/>
- </g>
-
- <!-- Visitor -->
- <g id="visitor">
-  <rect x="-24" y="598" width="20" height="26" rx="6" fill="#222"/><rect x="4" y="598" width="20" height="26" rx="6" fill="#222"/>
-  <path d="M-42 450 Q-42 428 -22 428 L22 428 Q42 428 42 450 L48 604 L-48 604 Z" fill="#fff" stroke="#9fb3c2" stroke-width="3"/>
-  <line x1="0" y1="440" x2="0" y2="480" stroke="#9fb3c2" stroke-width="2"/>
-  <g transform="translate(-38,455)"><line x1="0" y1="0" x2="-8" y2="82" stroke="#fff" stroke-width="16" stroke-linecap="round"/><line x1="0" y1="0" x2="-8" y2="82" stroke="#9fb3c2" stroke-width="2" stroke-linecap="round" opacity=".6"/><circle cx="-9" cy="90" r="8" fill="#d9a877"/></g>
-  <g id="rarm" transform="translate(38,455) rotate(-10)"><line x1="0" y1="0" x2="0" y2="84" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="0" cy="92" r="8" fill="#d9a877"/></g>
-  <circle cx="0" cy="402" r="27" fill="#d9a877"/>
-  <path d="M-34 410 Q-38 366 0 362 Q38 366 34 410 Q30 392 18 384 L-18 384 Q-30 392 -34 410Z" fill="#fff" stroke="#9fb3c2" stroke-width="2.5"/>
-  <path d="M-34 410 L-40 440 L-24 432 Z" fill="#fff" stroke="#9fb3c2" stroke-width="2"/><path d="M34 410 L40 440 L24 432 Z" fill="#fff" stroke="#9fb3c2" stroke-width="2"/>
-  <ellipse cx="0" cy="372" rx="31" ry="8" fill="none" stroke="#111" stroke-width="5"/>
-  <circle cx="-9" cy="402" r="2.8" fill="#222"/><circle cx="9" cy="402" r="2.8" fill="#222"/>
-  <ellipse id="mouth" cx="0" cy="414" rx="6" ry="1.5" fill="#6b2a2a"/>
- </g>
-
- <!-- speech bubble -->
- <g id="bubble" opacity="0"><rect x="30" y="248" width="320" height="76" rx="18" fill="#fff" stroke="#22d3ee" stroke-width="3"/>
-  <polygon id="btail" points="170,324 200,324 190,352" fill="#fff" stroke="#22d3ee" stroke-width="3"/><rect x="172" y="320" width="26" height="6" fill="#fff"/>
-  <text x="190" y="294" text-anchor="middle" font-size="12" fill="#5b6b7b" class="ar">الزائر</text>
-  <text id="tx_bub" x="190" y="316" text-anchor="middle" font-size="21" font-weight="bold" fill="#16212c" class="ar"></text></g>
-
- <!-- callouts -->
- <g id="callouts"></g>
 </g>
+
+<!-- callouts -->
+<g id="callouts"></g>
 
 <!-- ============ DIAGRAM OVERLAY ============ -->
 <g id="diag" opacity="0">
@@ -150,137 +141,120 @@ const ease=x=>x*x*(3-2*x);
 const lerp=(a,b,k)=>a+(b-a)*k;
 const mix=(c1,c2,k)=>c1.map((v,i)=>Math.round(lerp(v,c2[i],k)));
 const rgb=c=>`rgb(${c[0]},${c[1]},${c[2]})`;
+const {speeches,thinks,replies,logs,lights,walk}=TL;
+const [g0,g1]=TL.gest,[d0,d1]=TL.diag;
 
-const speeches=[
- {s:16.5,e:19,t:"يا جارفيس، عرّف نفسك للضيوف"},
- {s:23.5,e:25.5,t:"شغّل الأنوار"},
- {s:29,e:31,t:"خلها حمراء"},
- {s:35,e:37,t:"أنا بنام"},
- {s:48,e:50,t:"افتح الباب"}];
-const thinks=[[19,20],[25.5,26.5],[31,32],[37,38.5],[50,51]];
-const replies=[
- {s:20,e:23.5,l:["هلا والله! أنا جارفيس، مساعدك الذكي.","أفهم لهجتك وأتحكم في البيت."]},
- {s:26.5,e:29,l:["أبشر، شغلت الأنوار."]},
- {s:32,e:34.5,l:["تم، الإضاءة صارت حمراء."]},
- {s:42,e:47.5,l:["تصبح على خير! أطفأت الأنوار وشغلت المروحة،","والمنبه على ٤:٤٥ لصلاة الفجر."]},
- {s:51,e:54,l:["تفضل، الباب مفتوح."]}];
-const logs=[
- {t:26.6,x:'control_light("majlis","on")'},{t:32.1,x:'control_light(color="red")'},
- {t:38.6,x:'get_prayer_times()'},{t:39.6,x:'control_light("off")'},{t:40.6,x:'control_fan("on")'},{t:41.6,x:'set_alarm("04:45")'},
- {t:51.1,x:'unlock_door()'}];
-const caps=[
- {s:5,e:11,t:"هذا جناحك في المعرض: شاشة كبيرة، ومجسم بيت ذكي على الطاولة، وكاميرا للإيماءات"},
- {s:11,e:16.3,t:"يقترب الزائر من الجناح ليجرّب بنفسه"},
- {s:16.5,e:23.5,t:"يكلّم جارفيس بلهجته، وجارفيس يرد عليه بصوت عربي"},
- {s:23.5,e:34.5,t:"الأجهزة تستجيب أمام عينه مباشرة: إضاءة وتغيير لون"},
- {s:35,e:47.8,t:"بأمر واحد «أنا بنام» يقرر جارفيس الخطوات بنفسه: أنوار، مروحة، منبه"},
- {s:48,e:55,t:"وحتى قفل الباب يُفتح بصوتك عبر محرك سيرفو"},
- {s:55,e:63,t:"وبحركة اليد: يلوّح الزائر فتتفاعل الواجهة معه"},
- {s:63,e:72,t:"الصوت يتحول لنص، Claude يقرر الأدوات، وESP32 ينفّذ على الأجهزة"}];
 const callouts=[
- {s:6,x:150,y:60,w:190,t:"شاشة جارفيس",tx:330,ty:100},
- {s:7.2,x:240,y:300,w:200,t:"مجسم البيت الذكي",tx:460,ty:380},
- {s:8.4,x:1010,y:280,w:190,t:"كاميرا الإيماءات",tx:1010,ty:318},
- {s:9.6,x:960,y:40,w:200,t:"بانر + QR للتجربة",tx:1100,ty:110}];
+ {s:5.8,x:170,y:130,w:190,t:"شاشة جارفيس",tx:362,ty:170},
+ {s:6.8,x:150,y:262,w:190,t:"باب بقفل ذكي",tx:235,ty:340},
+ {s:7.8,x:1130,y:120,w:210,t:"إضاءة تنطفي وتتلوّن",tx:1030,ty:66},
+ {s:8.8,x:1150,y:330,w:150,t:"مروحة ذكية",tx:1062,ty:396},
+ {s:9.5,x:640,y:34,w:200,t:"كاميرا الإيماءات",tx:640,ty:76}];
 const nodes=[
- {x:1090,a:"الزائر",b:"يتكلم بلهجته",c:"#f5b942",tt:63.3},
- {x:860,a:"صوت ← نص",b:"Web Speech",c:"#22d3ee",tt:64.6},
- {x:630,a:"Claude",b:"يفهم ويقرر الأدوات",c:"#22d3ee",tt:65.9},
- {x:400,a:"ESP32",b:"يستقبل الأوامر WiFi",c:"#34d399",tt:67.2},
- {x:170,a:"الأجهزة",b:"💡 إضاءة · مروحة · قفل",c:"#34d399",tt:68.5}];
-
-// build static dynamic parts
+ {x:1090,a:"الزائر",b:"يتكلم بلهجته",c:"#f5b942",o:0},
+ {x:860,a:"صوت ← نص",b:"Web Speech",c:"#22d3ee",o:1},
+ {x:630,a:"Claude",b:"يفهم ويقرر الأدوات",c:"#22d3ee",o:2},
+ {x:400,a:"ESP32",b:"يستقبل الأوامر WiFi",c:"#34d399",o:3},
+ {x:170,a:"الأجهزة",b:"💡 إضاءة · مروحة · قفل",c:"#34d399",o:4}];
 const NS="http://www.w3.org/2000/svg";
 function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||$('s')).appendChild(e);return e}
-const logEls=[0,1,2,3].map(i=>{const e=el('text',{x:575,y:106+i*24,'font-size':14,class:'mono',fill:'#34d399'},$('logs'));return e});
-const handLines=[];
-for(let i=0;i<5;i++){handLines.push([el('line',{stroke:'#34d399','stroke-width':3,'stroke-linecap':'round'},$('handg')),el('circle',{r:5,fill:'#f5b942'},$('handg'))])}
+// lamps
+const lampXs=[380,900];
+const lampEls=lampXs.map(x=>({halo:el('ellipse',{cx:x,cy:30,rx:150,ry:90,fill:'url(#halo)',opacity:0},$('lamps')),body:el('ellipse',{cx:x,cy:26,rx:56,ry:9,fill:'#2a2f36'},$('lamps'))}));
+const logEls=[0,1,2,3].map(i=>el('text',{x:575,y:106+i*24,'font-size':16,class:'mono',fill:'#34d399'},$('logs')));
+const handLines=[];for(let i=0;i<5;i++){handLines.push([el('line',{stroke:'#34d399','stroke-width':3,'stroke-linecap':'round'},$('handg')),el('circle',{r:5,fill:'#f5b942'},$('handg'))])}
 const palm=el('circle',{r:12,fill:'none',stroke:'#34d399','stroke-width':3},$('handg'));
-const nodeEls=nodes.map(n=>{const g=el('g',{opacity:0},$('nodes'));
+const nodeEls=nodes.map((n,i)=>{const g=el('g',{opacity:0},$('nodes'));
  el('rect',{x:n.x-95,y:270,width:190,height:120,rx:14,fill:'#0d2236',stroke:n.c,'stroke-width':3},g);
- const a=el('text',{x:n.x,y:322,'text-anchor':'middle','font-size':24,'font-weight':'bold',fill:n.c,class:'ar'},g);a.textContent=n.a;
- const b=el('text',{x:n.x,y:358,'text-anchor':'middle','font-size':14,fill:'#cfe8f3',class:'ar'},g);b.textContent=n.b;return g});
+ el('text',{x:n.x,y:322,'text-anchor':'middle','font-size':24,'font-weight':'bold',fill:n.c,class:'ar'},g).textContent=n.a;
+ el('text',{x:n.x,y:358,'text-anchor':'middle','font-size':14,fill:'#cfe8f3',class:'ar'},g).textContent=n.b;return g});
 const calEls=callouts.map(c=>{const g=el('g',{opacity:0},$('callouts'));
  el('line',{x1:c.x,y1:c.y+(c.ty>c.y?18:0),x2:c.tx,y2:c.ty,stroke:'#f5b942','stroke-width':3},g);
  el('circle',{cx:c.tx,cy:c.ty,r:6,fill:'#f5b942'},g);
  el('rect',{x:c.x-c.w/2,y:c.y-18,width:c.w,height:36,rx:18,fill:'#07121f',stroke:'#f5b942','stroke-width':2.5},g);
- const t=el('text',{x:c.x,y:c.y+7,'text-anchor':'middle','font-size':17,fill:'#fff',class:'ar'},g);t.textContent=c.t;return g});
+ el('text',{x:c.x,y:c.y+7,'text-anchor':'middle','font-size':17,fill:'#fff',class:'ar'},g).textContent=c.t;return g});
 
-function typed(text,s,e,t){const k=cl((t-s)/Math.max(0.3,(e-s)*0.75));return text.slice(0,Math.ceil(text.length*k))}
-
+function typed(text,s,e,t){const k=cl((t-s)/Math.max(0.3,(e-s)*0.8));return text.slice(0,Math.ceil(text.length*k))}
+function lightState(t){ // booth lights: smooth transitions between keyframes
+ let po=1,pr=0,o=1,r=0;
+ for(const ev of lights){const k=ease(ramp(t,ev.t,ev.t+0.6));
+  if(t>=ev.t){o=lerp(po,ev.on,k);r=lerp(pr,ev.red,k);po=ev.on;pr=ev.red}else break;}
+ return {on:o,red:r};
+}
 function render(t){
- // intro / outro
  $('intro').setAttribute('opacity',1-ramp(t,4.4,5.4));
- $('outro').setAttribute('opacity',ramp(t,72,73));
+ $('outro').setAttribute('opacity',ramp(t,d1+.6,d1+1.6));
  // visitor
- let vx=t<11?-160:t<16.3?lerp(-160,250,ease(ramp(t,11,16.3))):250;
- const walking=t>=11&&t<16.3;
+ const VX=620;
+ const vx=t<walk[0]?-160:t<walk[1]?lerp(-160,VX,ease(ramp(t,walk[0],walk[1]))):VX;
+ const walking=t>=walk[0]&&t<walk[1];
  const bob=walking?Math.abs(Math.sin(t*9))*-6:0;
  const sp=speeches.find(x=>t>=x.s&&t<=x.e);
- const speaking=!!sp;
  $('visitor').setAttribute('transform',`translate(${vx},${bob})`);
- $('mouth').setAttribute('ry',speaking?1.5+Math.abs(Math.sin(t*14))*4:1.5);
- const raise=ease(ramp(t,54.3,55.3))*(1-ease(ramp(t,62.5,63.3)));
+ $('mouth').setAttribute('ry',sp?1.5+Math.abs(Math.sin(t*14))*4:1.5);
+ $('waves').setAttribute('opacity',sp?(0.5+0.5*Math.sin(t*12)):0);
+ const raise=ease(ramp(t,g0-.7,g0+.3))*(1-ease(ramp(t,g1-.5,g1+.3)));
  const ang=lerp(-10,-150+16*Math.sin(t*7),raise);
  $('rarm').setAttribute('transform',`translate(38,455) rotate(${walking?-10+Math.sin(t*9)*8:ang})`);
- // bubble
- const bs=speeches.find(x=>t>=x.s&&t<=x.e+0.7);
- $('bubble').setAttribute('opacity',bs?1:0);
- $('bubble').setAttribute('transform',`translate(${vx-190},0)`);
- $('btail').setAttribute('points','170,324 200,324 190,352');
- $('tx_bub').textContent=bs?typed(bs.t,bs.s,bs.e,t):'';
- $('tx_user').textContent=bs&&t<bs.e+3?'«'+typed(bs.t,bs.s,bs.e,t)+'»':'';
+ // user transcript on screen
+ const bs=speeches.find(x=>t>=x.s&&t<=x.e+2.5);
+ $('tx_user').textContent=bs?'الزائر: «'+typed(bs.t,bs.s,bs.e,t)+'»':'';
  // jarvis state
  const think=thinks.find(x=>t>=x[0]&&t<x[1]);
  const rep=replies.find(x=>t>=x.s&&t<=x.e);
- const gest=t>=55&&t<63;
+ const gest=t>=g0&&t<g1;
  let state='idle';
- if(speaking)state='listen';else if(think)state='think';else if(rep)state='talk';else if(gest)state='gest';else if(t>=38.5&&t<42)state='exec';
- const cfg={idle:['ينتظر…','#22d3ee'],listen:['يستمع…','#fde68a'],think:['يفكر…','#f5b942'],talk:['يتكلم','#34d399'],gest:['تتبّع اليد','#34d399'],exec:['ينفّذ الأوامر…','#34d399']}[state];
+ if(sp)state='listen';else if(think)state='think';else if(rep)state='talk';else if(gest)state='gest';
+ const cfg={idle:['جاهز','#22d3ee'],listen:['يستمع…','#fde68a'],think:['يفكر…','#f5b942'],talk:['يتكلم','#34d399'],gest:['تتبّع اليد','#34d399']}[state];
  $('tx_status').textContent=t<16?'جاهز':cfg[0];
  const col=t<16?'#22d3ee':cfg[1];
  const amp=state==='idle'?3:(Math.abs(Math.sin(t*11))*0.6+Math.abs(Math.sin(t*5.3))*0.4)*14;
  $('ringcore').setAttribute('r',22+amp);$('ringcore').setAttribute('fill',col);
  $('ringglow').setAttribute('r',70+amp*1.5);$('ringglow').setAttribute('fill',col);
- const spin=(state==='think'||state==='exec')?260:state==='gest'?180:40;
+ const spin=state==='think'?260:state==='gest'?180:40;
  $('ringdash').setAttribute('transform',`rotate(${t*spin})`);$('ringdash').setAttribute('stroke',col);
- const rx=gest?450+34*Math.sin((t-55)*3.2):450;
- $('ringg').setAttribute('transform',`translate(${rx},140)`);
- // reply text
- const l1=rep?rep.l[0]:'',l2=rep&&rep.l[1]?rep.l[1]:'';
- $('tx_r1').textContent=rep?typed(l1,rep.s,rep.s+(rep.e-rep.s)*(l2?0.5:1),t):'';
- $('tx_r2').textContent=rep&&l2?typed(l2,rep.s+(rep.e-rep.s)*0.5,rep.e,t):'';
+ $('ringg').setAttribute('transform',`translate(${gest?450+34*Math.sin((t-g0)*3.2):450},140)`);
+ // reply
+ if(rep&&rep.l.length>1){const m=rep.s+(rep.e-rep.s)*0.5;$('tx_r1').textContent=typed(rep.l[0],rep.s,m,t);$('tx_r2').textContent=typed(rep.l[1],m,rep.e,t)}
+ else {$('tx_r1').textContent=rep?typed(rep.l[0],rep.s,rep.e,t):'';$('tx_r2').textContent=''}
  // logs
  const shown=logs.filter(l=>t>=l.t).slice(-4);
  logEls.forEach((e,i)=>{const l=shown[i];e.textContent=l?'▸ '+l.x:'';e.setAttribute('fill',l&&l===shown[shown.length-1]?'#34d399':'#2c7f66')});
  $('tx_loghead').textContent=gest?'كاميرا الإيماءات: تتبّع اليد':'سجل الأدوات المنفّذة';
- // hand skeleton
  $('handg').setAttribute('opacity',gest?1:0);
- if(gest){const cx=800+Math.sin((t-55)*3.2)*18,cy=170;const tilt=Math.sin((t-55)*3.2)*0.35;
+ if(gest){const cx=800+Math.sin((t-g0)*3.2)*18,cy=170,tilt=Math.sin((t-g0)*3.2)*0.35;
   palm.setAttribute('cx',cx);palm.setAttribute('cy',cy);
-  handLines.forEach((h,i)=>{const a=-Math.PI/2+(i-2)*0.42+tilt;const len=i===0||i===4?34:46;const x1=cx,y1=cy-10;const x2=cx+Math.cos(a)*len*1.2,y2=cy-10+Math.sin(a)*len*1.2;
-   h[0].setAttribute('x1',x1);h[0].setAttribute('y1',y1);h[0].setAttribute('x2',x2);h[0].setAttribute('y2',y2);h[1].setAttribute('cx',x2);h[1].setAttribute('cy',y2)})}
- $('camled').setAttribute('fill',gest||speaking?'#34d399':'#444');
- // light
- const on=cl(ramp(t,26.5,27.2)-ramp(t,39.8,40.5));
- const lc=mix([255,211,107],[255,59,59],ramp(t,32,33));
- $('majlis').setAttribute('fill',on>0.02?rgb(mix([29,43,54],lc,on)):'#1d2b36');
- $('bulb').setAttribute('fill',on>0.02?rgb(mix([68,68,68],lc,on)):'#444');
- $('glowl').setAttribute('fill',rgb(lc));$('glowl').setAttribute('opacity',on*0.28);
- $('lbl_m').setAttribute('fill',on>0.5?'#07121f':'#9fb3c2');
+  handLines.forEach((h,i)=>{const a=-Math.PI/2+(i-2)*0.42+tilt,len=(i===0||i===4?34:46)*1.2,x2=cx+Math.cos(a)*len,y2=cy-10+Math.sin(a)*len;
+   h[0].setAttribute('x1',cx);h[0].setAttribute('y1',cy-10);h[0].setAttribute('x2',x2);h[0].setAttribute('y2',y2);h[1].setAttribute('cx',x2);h[1].setAttribute('cy',y2)})}
+ $('camled').setAttribute('fill',gest||sp?'#34d399':'#444');
+ // ---- booth lighting ----
+ const L=lightState(t);
+ const warm=[255,233,176],redc=[255,59,59];
+ const lc=mix(warm,redc,L.red);
+ $('dark').setAttribute('opacity',(1-L.on)*0.72);
+ $('tint').setAttribute('opacity',L.on*L.red*0.22);
+ $('led').setAttribute('fill',L.on>0.03?rgb(mix([42,47,54],lc,L.on)):'#2a2f36');
+ $('ledglow').setAttribute('fill',rgb(lc));$('ledglow').setAttribute('opacity',L.on*0.38);
+ lampEls.forEach(l=>{l.halo.setAttribute('fill',rgb(lc));l.halo.setAttribute('opacity',L.on*0.55);l.body.setAttribute('fill',rgb(mix([42,47,54],lc,L.on)))});
+ $('scrglow').setAttribute('opacity',0.06+(1-L.on)*0.30);
  // fan
- const fa=t>40.8?(t-40.8)*300:0;$('fan').setAttribute('transform',`rotate(${fa})`);
+ $('fan').setAttribute('transform',`rotate(${t>TL.fan?(t-TL.fan)*300:0})`);
  // door
- const o=ease(ramp(t,51,51.8))*(1-ease(ramp(t,58,58.8)));
- $('door').setAttribute('transform',`translate(745,390) scale(${1-0.82*o},1)`);
+ const o=ease(ramp(t,TL.door[0],TL.door[0]+.9))*(1-ease(ramp(t,TL.door[1],TL.door[1]+.9)));
+ const dk=(1-L.on)*0.72;
+ $('door').setAttribute('transform',`translate(225,304) scale(${1-0.85*o},1)`);
+ $('door').firstChild.setAttribute('fill',rgb(mix([139,94,60],[28,18,12],dk)));
+ $('exterior').setAttribute('opacity',o*0.95);
+ $('spill').setAttribute('opacity',o*(0.25+dk*0.7));
+ $('lockled').setAttribute('fill',o>0.05?'#34d399':'#ff4d4d');
  // callouts
  callouts.forEach((c,i)=>calEls[i].setAttribute('opacity',cl(ramp(t,c.s,c.s+0.4))*(1-ramp(t,10.6,11))));
  // diagram
- $('diag').setAttribute('opacity',cl(ramp(t,62.8,63.5)*(1-ramp(t,71.2,72))));
- nodes.forEach((n,i)=>nodeEls[i].setAttribute('opacity',ramp(t,n.tt,n.tt+0.4)));
- const px=lerp(1090,170,ease(ramp(t,63.3,70.5)));$('pulse').setAttribute('cx',px);$('pulse').setAttribute('r',9+Math.sin(t*10)*2);
+ $('diag').setAttribute('opacity',cl(ramp(t,d0-.2,d0+.5)*(1-ramp(t,d1-.8,d1))));
+ nodes.forEach((n,i)=>nodeEls[i].setAttribute('opacity',ramp(t,d0+.5+i*1.3,d0+.9+i*1.3)));
+ $('pulse').setAttribute('cx',lerp(1090,170,ease(ramp(t,d0+.7,d1-1.2))));$('pulse').setAttribute('r',9+Math.sin(t*10)*2);
  // captions
- const c=caps.find(x=>t>=x.s&&t<x.e);
+ const c=TL.caps.find(x=>t>=x.s&&t<x.e);
  $('cap').textContent=c?c.t:'';
  $('capg').setAttribute('opacity',c?cl(Math.min(ramp(t,c.s,c.s+0.3),1-ramp(t,c.e-0.3,c.e))):0);
 }
