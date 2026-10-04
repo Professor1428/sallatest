@@ -4,15 +4,22 @@ import json, os, subprocess, soundfile as sf
 HERE=os.path.dirname(os.path.abspath(__file__))
 S='/tmp/claude-0/-home-user-sallatest/d8d3f76d-a835-504e-98cc-ff1925bfca37/scratchpad'
 RAW=f'{S}/raw'; FX=f'{S}/fx'; os.makedirs(FX,exist_ok=True)
-subprocess.run(['python3',f'{HERE}/tts.py',f'{HERE}/lines.json',RAW],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+if not os.environ.get('REUSE'): subprocess.run(['python3',f'{HERE}/tts.py',f'{HERE}/lines.json',RAW],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 def ff(*a): subprocess.run(['ffmpeg','-y','-loglevel','error',*a],check=True)
 keys=list(json.load(open(f'{HERE}/lines.json',encoding='utf-8')).keys())
-for k in keys:   # no pitch-shifting (it caused the robotic/choppy sound): just clean + level each voice
+JARVIS_GRAPH=('[0:a]aresample=44100,asplit=3[a][b][c];'
+ '[a]rubberband=pitch=0.72:formant=shifted,volume=3,asoftclip=type=tanh,volume=0.45[m];'      # deep + gritty (distortion)
+ '[b]rubberband=pitch=0.48,volume=0.8[sub];'                                                   # sub-octave growl
+ '[c]rubberband=pitch=0.72:formant=shifted[c2];[c2][1:a]amultiply,volume=2.2[rob];'            # ring-mod robot layer
+ '[m][sub][rob]amix=inputs=3:weights=1 0.55 0.35:normalize=0,highpass=f=50,lowpass=f=6500,'
+ 'equalizer=f=140:t=q:w=1.2:g=4,acompressor=threshold=-22dB:ratio=4:attack=4:release=60,'
+ 'aecho=0.8:0.85:45|95:0.38|0.22,loudnorm=I=-14:TP=-1.5:LRA=7')
+for k in keys:
     if k.startswith('v'):
         f='highpass=f=80,lowpass=f=9000,acompressor=threshold=-20dB:ratio=3:attack=5:release=80,loudnorm=I=-17:TP=-2:LRA=7,afade=t=in:d=0.02'
-    else:
-        f='highpass=f=70,lowpass=f=10000,equalizer=f=2800:t=q:w=1.0:g=2,acompressor=threshold=-20dB:ratio=3:attack=5:release=80,aecho=0.85:0.3:22:0.10,loudnorm=I=-16:TP=-2:LRA=7,afade=t=in:d=0.02'
-    ff('-i',f'{RAW}/{k}.wav','-af',f,'-ar','44100',f'{FX}/{k}.wav')
+        ff('-i',f'{RAW}/{k}.wav','-af',f,'-ar','44100',f'{FX}/{k}.wav')
+    else:   # Jarvis: monster / genie-like robotic voice
+        ff('-i',f'{RAW}/{k}.wav','-f','lavfi','-i','sine=f=65:d=20','-filter_complex',JARVIS_GRAPH,'-ar','44100',f'{FX}/{k}.wav')
 D={k:sf.info(f'{FX}/{k}.wav').duration for k in keys}
 
 sp=[];th=[];rep=[];logs=[];lights=[];place={}
